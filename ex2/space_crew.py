@@ -90,7 +90,7 @@ class SpaceMission(BaseModel):
 # Demonstration Function
 def main() -> None:
     print("Space Mission Crew Validation")
-    print("=" * 30)
+    print("==============================")
 
     # 1. Initialize valid crew members
     commander = CrewMember(
@@ -134,28 +134,28 @@ def main() -> None:
             crew=[commander, lieutenant, officer],
             budget_millions=2500.0,
         )
-
         print("Valid mission created:")
-        print(f"Mission: {valid_mission.mission_name}")
         print(f"ID: {valid_mission.mission_id}")
+        print(f"Mission: {valid_mission.mission_name}")
         print(f"Destination: {valid_mission.destination}")
+        print(f"Launch Date: {valid_mission.launch_date}")
         print(f"Duration: {valid_mission.duration_days} days")
-        print(f"Budget: ${valid_mission.budget_millions}M")
         print(f"Crew size: {len(valid_mission.crew)}")
         print("Crew members:")
         for m in valid_mission.crew:
             info = f"  {m.name} ({m.rank.value}) {m.specialization}"
             print(info)
+        print(f"Budget: ${valid_mission.budget_millions}M")
 
     except ValidationError as e:
         print(f"Unexpected validation error: {e}")
 
-    print("\n" + "=" * 30 + "\n")
+    print("\n==============================\n")
 
     # 3. Attempt to create invalid mission (No Commander or Captain present)
     print("Expected validation error:")
     try:
-        SpaceMission(
+        invalid_mission = SpaceMission(
             mission_id="M2024_FAIL",
             mission_name="Unsupervised Cadet Flight",
             destination="The Moon",
@@ -167,9 +167,22 @@ def main() -> None:
             ],  # Invalid: Missing Rank.COMMANDER or Rank.CAPTAIN
             budget_millions=50.0,
         )
+        print("Valid mission created:")
+        print(f"ID: {invalid_mission.mission_id}")
+        print(f"Mission: {invalid_mission.mission_name}")
+        print(f"Destination: {invalid_mission.destination}")
+        print(f"Launch Date: {invalid_mission.launch_date}")
+        print(f"Duration: {invalid_mission.duration_days} days")
+        print(f"Crew size: {len(invalid_mission.crew)}")
+        print("Crew members:")
+        for m in invalid_mission.crew:
+            info = f"  {m.name} ({m.rank.value}) {m.specialization}"
+            print(info)
+        print(f"Budget: ${invalid_mission.budget_millions}M")
     except ValidationError as e:
         for error in e.errors():
             print(f"ValidationError: {error['msg']}")
+    print("\n==============================\n")
 
 
 if __name__ == "__main__":

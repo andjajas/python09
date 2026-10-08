@@ -63,7 +63,7 @@ class AlienContact(BaseModel):
 # Demonstration Function
 def main() -> None:
     print("Alien Contact Log Validation")
-    print("=" * 30)
+    print("==============================")
 
     # 1. Create a valid contact report instance
     try:
@@ -80,6 +80,7 @@ def main() -> None:
         )
         print("Valid contact report:")
         print(f"ID: {valid_contact.contact_id}")
+        print(f"Date: {valid_contact.timestamp}")
         print(f"Type: {valid_contact.contact_type.value}")
         print(f"Location: {valid_contact.location}")
         print(f"Signal: {valid_contact.signal_strength}/10")
@@ -89,13 +90,13 @@ def main() -> None:
     except ValidationError as e:
         print(f"Unexpected error: {e}")
 
-    print("\n" + "=" * 30 + "\n")
+    print("\n==============================\n")
 
     # 2. Attempt to create an invalid contact report
     # (Telepathic with < 3 witnesses)
     print("Expected validation error:")
     try:
-        AlienContact(
+        invalid_contact = AlienContact(
             contact_id="AC_TELE_FAIL",
             timestamp=datetime.now(),
             location="Roswell, New Mexico",
@@ -106,9 +107,19 @@ def main() -> None:
             # Invalid: Telepathic contacts require >= 3 witnesses
             is_verified=True,
         )
+        print("Invalid contact report:")
+        print(f"ID: {invalid_contact.contact_id}")
+        print(f"Date: {invalid_contact.timestamp}")
+        print(f"Type: {invalid_contact.contact_type.value}")
+        print(f"Location: {invalid_contact.location}")
+        print(f"Signal: {invalid_contact.signal_strength}/10")
+        print(f"Duration: {invalid_contact.duration_minutes} minutes")
+        print(f"Witnesses: {invalid_contact.witness_count}")
+        print(f"Message: '{invalid_contact.message_received}'")
     except ValidationError as e:
         for error in e.errors():
             print(f"ValidationError: {error['msg']}")
+    print("\n==============================\n")
 
 
 if __name__ == "__main__":
